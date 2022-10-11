@@ -1,26 +1,26 @@
-using JSOTemplate
+using Scaling
 using Documenter
 
-DocMeta.setdocmeta!(JSOTemplate, :DocTestSetup, :(using JSOTemplate); recursive = true)
+DocMeta.setdocmeta!(Scaling, :DocTestSetup, :(using Scaling); recursive = true)
 
 makedocs(;
-  modules = [JSOTemplate],
+  modules = [Scaling],
   doctest = true,
   linkcheck = false,
   strict = false,
-  authors = "Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors",
-  repo = "https://github.com/JuliaSmoothOptimizers/JSOTemplate.jl/blob/{commit}{path}#{line}",
+  authors = "Geoffroy Leconte <gleconte50@gmail.com> and contributors",
+  repo = "https://github.com/JuliaSmoothOptimizers/Scaling.jl/blob/{commit}{path}#{line}",
   sitename = "JSOTemplate.jl",
   format = Documenter.HTML(;
     prettyurls = get(ENV, "CI", "false") == "true",
-    canonical = "https://JuliaSmoothOptimizers.github.io/JSOTemplate.jl",
+    canonical = "https://JuliaSmoothOptimizers.github.io/Scaling.jl",
     assets = ["assets/style.css"],
   ),
   pages = ["Home" => "index.md", "Reference" => "reference.md"],
 )
 
 deploydocs(;
-  repo = "github.com/JuliaSmoothOptimizers/JSOTemplate.jl",
+  repo = "github.com/JuliaSmoothOptimizers/Scaling.jl",
   push_preview = true,
   devbranch = "main",
 )

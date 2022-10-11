@@ -1,6 +1,6 @@
-using JSOTemplate
+using Scaling
 using Test
 
-@testset "JSOTemplate.jl" begin
+@testset "Scaling.jl" begin
   # Write your tests here.
 end
