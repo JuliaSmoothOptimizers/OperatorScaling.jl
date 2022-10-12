@@ -37,7 +37,7 @@ Performs the equilibration algorithm on the matrix `A` and returns the scaled ma
 
 Performs the equilibration algorithm on the symmetric matrix `Q` and returns the scaled matrix matrix `Q_scaled` with its diagonal scaling factor `D`.
 
-See [`Equilibrate!`](@ref) for the keyword arguments.
+See [`equilibrate!`](@ref) for the keyword arguments.
 """
 function equilibrate end
 
