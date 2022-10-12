@@ -1,7 +1,7 @@
 using OperatorScaling
 using Documenter
 
-DocMeta.setdocmeta!(Scaling, :DocTestSetup, :(using OperatorScaling); recursive = true)
+DocMeta.setdocmeta!(OperatorScaling, :DocTestSetup, :(using OperatorScaling); recursive = true)
 
 makedocs(;
   modules = [OperatorScaling],
