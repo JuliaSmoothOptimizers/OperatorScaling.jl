@@ -1,4 +1,11 @@
-function get_norm_rc_CSC!(v::AbstractVector{T}, A_colptr, A_rowval, A_nzval::AbstractVector{T}, n, ax) where {T}
+function get_norm_rc_CSC!(
+  v::AbstractVector{T},
+  A_colptr,
+  A_rowval,
+  A_nzval::AbstractVector{T},
+  n,
+  ax,
+) where {T}
   v .= zero(T)
   for j = 1:n
     @inbounds for i = A_colptr[j]:(A_colptr[j + 1] - 1)
@@ -21,7 +28,13 @@ end
 get_norm_rc!(v::AbstractVector{T}, A::SparseMatrixCSC{T, Int}, ax) where {T} =
   get_norm_rc_CSC!(v, A.colptr, A.rowval, A.nzval, size(A, 2), ax)
 
-function get_norm_rc_CSC_sym!(v::AbstractVector{T}, A_colptr, A_rowval, A_nzval::AbstractVector{T}, n) where {T}
+function get_norm_rc_CSC_sym!(
+  v::AbstractVector{T},
+  A_colptr,
+  A_rowval,
+  A_nzval::AbstractVector{T},
+  n,
+) where {T}
   v .= zero(T)
   for j = 1:n
     @inbounds for i = A_colptr[j]:(A_colptr[j + 1] - 1)

@@ -6,9 +6,9 @@ using Test
   T = Float64
   ϵ = 1.0e-2
   m, n = 15, 20
-   # no empty rows/cols to be able to test infinity row/col norm
+  # no empty rows/cols to be able to test infinity row/col norm
   A1 = sprand(T, m, n, 0.2) + 0.5 * I
-  A1[1, m+1:n] .+= 0.5
+  A1[1, (m + 1):n] .+= 0.5
   A2 = rand(T, m, n)
   for A in [A1, A2]
     A_scaled, D1, D2 = equilibrate(A, ϵ = ϵ)
