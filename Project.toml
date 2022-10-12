@@ -1,6 +1,6 @@
-name = "JSOTemplate"
-uuid = "adf32eb0-fe7e-47bb-93e4-fe96e72f6839"
-authors = ["Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors"]
+name = "Scaling"
+uuid = "c32e1cdf-d535-416b-8655-021cdbf00cd4"
+authors = ["Geoffroy Leconte <abel.s.siqueira@gmail.com> and contributors"]
 version = "0.1.0"
 
 [compat]

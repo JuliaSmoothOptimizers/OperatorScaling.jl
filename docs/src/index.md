@@ -1,7 +1,7 @@
 ```@meta
-CurrentModule = JSOTemplate
+CurrentModule = Scaling
 ```
 
-# JSOTemplate
+# Scaling
 
-Documentation for [JSOTemplate](https://github.com/JuliaSmoothOptimizers/JSOTemplate.jl).
+Documentation for [Scaling](https://github.com/JuliaSmoothOptimizers/Scaling.jl).

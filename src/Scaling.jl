@@ -1,4 +1,4 @@
-module JSOTemplate
+module Scaling
 
 # Write your package code here.
 
