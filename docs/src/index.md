@@ -1,7 +1,7 @@
 ```@meta
-CurrentModule = Scaling
+CurrentModule = OperatorScaling
 ```
 
 # Scaling
 
-Documentation for [Scaling](https://github.com/JuliaSmoothOptimizers/Scaling.jl).
+Documentation for [OperatorScaling](https://github.com/JuliaSmoothOptimizers/OperatorScaling.jl).
