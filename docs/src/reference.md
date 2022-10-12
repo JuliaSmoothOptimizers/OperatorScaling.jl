@@ -13,5 +13,5 @@ Pages = ["reference.md"]
 ```
 ​
 ```@autodocs
-Modules = [Scaling]
+Modules = [OperatorScaling]
 ```

@@ -1,5 +1,5 @@
 using LinearAlgebra, SparseArrays
-using Scaling
+using OperatorScaling
 using Test
 
 @testset "Equilibration" begin

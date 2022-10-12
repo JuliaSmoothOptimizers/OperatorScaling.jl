@@ -1,4 +1,4 @@
-module Scaling
+module OperatorScaling
 
 # Write your package code here.
 
