@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Tutorial · OperatorScaling.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link rel="canonical" href="https://JuliaSmoothOptimizers.github.io/OperatorScaling.jl/tutorial/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="../assets/style.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.png" alt="OperatorScaling.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">OperatorScaling.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li class="is-active"><a class="tocitem" href>Tutorial</a></li><li><a class="tocitem" href="../reference/">Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Tutorial</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Tutorial</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaSmoothOptimizers/OperatorScaling.jl/blob/main/docs/src/tutorial.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Equilibration-algorithm"><a class="docs-heading-anchor" href="#Equilibration-algorithm">Equilibration algorithm</a><a id="Equilibration-algorithm-1"></a><a class="docs-heading-anchor-permalink" href="#Equilibration-algorithm" title="Permalink"></a></h1><p>The equilibration algorithm scales a matrix so that its rows and columns have an infinite norm of 1.</p><pre><code class="language-julia hljs">using LinearAlgebra, SparseArrays
+using OperatorScaling
+T = Float64
+ϵ = 1.0e-4 # tolerance
+m, n = 7, 5
+A = sprand(T, m, n, 0.6)
+A_scaled, D1, D2 = equilibrate(A, ϵ = ϵ)
+norm(D1 * A * D2 - A_scaled) ≤ sqrt(eps(T)) * norm(A)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre><p>Display of the input matrix <code>A</code>:</p><pre><code class="language-julia hljs">A</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×5 SparseArrays.SparseMatrixCSC{Float64, Int64} with 17 stored entries:
+  ⋅        0.597366  0.194199    ⋅        0.341091
+ 0.564934  0.1956     ⋅          ⋅        0.533431
+ 0.563644   ⋅        0.0472323   ⋅         ⋅ 
+ 0.155658   ⋅         ⋅          ⋅         ⋅ 
+  ⋅         ⋅        0.957573   0.960784  0.7915
+  ⋅         ⋅         ⋅         0.196339   ⋅ 
+  ⋅        0.831452  0.189721   0.521422  0.285487</code></pre><p>Display of the scaled matrix <code>A_scaled</code>:</p><pre><code class="language-julia hljs">A_scaled</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×5 SparseArrays.SparseMatrixCSC{Float64, Int64} with 17 stored entries:
+  ⋅        0.99998   0.303429    ⋅        0.644757
+ 1.0       0.285399   ⋅          ⋅        0.878893
+ 1.0        ⋅        0.0644724   ⋅         ⋅ 
+ 0.999921   ⋅         ⋅          ⋅         ⋅ 
+  ⋅         ⋅        1.0        1.0       0.999988
+  ⋅         ⋅         ⋅         0.999903   ⋅ 
+  ⋅        1.0       0.212979   0.583389  0.387726</code></pre><p>The in-place version uses storage diagonal matrices, and updates <code>A</code>, <code>D1</code> and <code>D2</code> in-place.</p><pre><code class="language-julia hljs">D1, R_k = Diagonal(Vector{T}(undef, m)), Diagonal(Vector{T}(undef, m))
+D2, C_k = Diagonal(Vector{T}(undef, n)), Diagonal(Vector{T}(undef, n))
+A_scaled2 = copy(A)
+equilibrate!(A_scaled2, D1, D2, R_k, C_k, ϵ = ϵ)
+# A_scaled2, D1 and D2 are now updated
+norm(D1 * A * D2 - A_scaled2) ≤ sqrt(eps(T)) * norm(A)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre><p>This packages also features an implementation for symmetric matrices:</p><pre><code class="language-julia hljs">A = sprand(Float64, m, m, 0.3)
+Q = Symmetric(tril(A + A&#39;), :L)
+Q_scaled, D = equilibrate(Q, ϵ = ϵ)
+norm(D * Q * D - Q_scaled) ≤ sqrt(eps(T)) * norm(Q)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre><p>Display of the input matrix <code>Q</code>:</p><pre><code class="language-julia hljs">Q</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×7 LinearAlgebra.Symmetric{Float64, SparseArrays.SparseMatrixCSC{Float64, Int64}}:
+ 0.0       0.291809   0.854851  0.0       0.982931  0.0       0.346282
+ 0.291809  0.0        0.737565  0.0       0.600071  0.78295   0.0505611
+ 0.854851  0.737565   0.0       0.0       0.0       0.0       0.0
+ 0.0       0.0        0.0       1.93351   0.996128  0.0       0.229134
+ 0.982931  0.600071   0.0       0.996128  0.0       0.0       0.0
+ 0.0       0.78295    0.0       0.0       0.0       0.0       0.584395
+ 0.346282  0.0505611  0.0       0.229134  0.0       0.584395  0.0</code></pre><p>Display of the scaled matrix <code>Q_scaled</code>:</p><pre><code class="language-julia hljs">Q_scaled</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×7 LinearAlgebra.Symmetric{Float64, SparseArrays.SparseMatrixCSC{Float64, Int64}}:
+ 0.0       0.333748   0.999969  0.0       1.0       0.0       0.530574
+ 0.333748  0.0        0.96348   0.0       0.681751  1.0       0.0865126
+ 0.999969  0.96348    0.0       0.0       0.0       0.0       0.0
+ 0.0       0.0        0.0       1.0       0.720166  0.0       0.249485
+ 1.0       0.681751   0.0       0.720166  0.0       0.0       0.0
+ 0.0       1.0        0.0       0.0       0.0       0.0       0.999929
+ 0.530574  0.0865126  0.0       0.249485  0.0       0.999929  0.0</code></pre><pre><code class="language-julia hljs">Q_scaled2 = copy(Q)
+# D diagonal matrix and storage diagonal matrix (same size as Q)
+D, C_k = Diagonal(Vector{T}(undef, m)), Diagonal(Vector{T}(undef, m))
+equilibrate!(Q_scaled2, D, C_k, ϵ = ϵ)
+norm(D * Q * D - Q_scaled2) ≤ sqrt(eps(T)) * norm(Q)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../reference/">Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 3 November 2022 20:06">Thursday 3 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
