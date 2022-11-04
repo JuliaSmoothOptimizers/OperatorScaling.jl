@@ -6,21 +6,21 @@ T = Float64
 m, n = 7, 5
 A = sprand(T, m, n, 0.6)
 A_scaled, D1, D2 = equilibrate(A, ϵ = ϵ)
-norm(D1 * A * D2 - A_scaled) ≤ sqrt(eps(T)) * norm(A)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre><p>Display of the input matrix <code>A</code>:</p><pre><code class="language-julia hljs">A</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×5 SparseArrays.SparseMatrixCSC{Float64, Int64} with 17 stored entries:
-  ⋅        0.597366  0.194199    ⋅        0.341091
- 0.564934  0.1956     ⋅          ⋅        0.533431
- 0.563644   ⋅        0.0472323   ⋅         ⋅ 
- 0.155658   ⋅         ⋅          ⋅         ⋅ 
-  ⋅         ⋅        0.957573   0.960784  0.7915
-  ⋅         ⋅         ⋅         0.196339   ⋅ 
-  ⋅        0.831452  0.189721   0.521422  0.285487</code></pre><p>Display of the scaled matrix <code>A_scaled</code>:</p><pre><code class="language-julia hljs">A_scaled</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×5 SparseArrays.SparseMatrixCSC{Float64, Int64} with 17 stored entries:
-  ⋅        0.99998   0.303429    ⋅        0.644757
- 1.0       0.285399   ⋅          ⋅        0.878893
- 1.0        ⋅        0.0644724   ⋅         ⋅ 
- 0.999921   ⋅         ⋅          ⋅         ⋅ 
-  ⋅         ⋅        1.0        1.0       0.999988
-  ⋅         ⋅         ⋅         0.999903   ⋅ 
-  ⋅        1.0       0.212979   0.583389  0.387726</code></pre><p>The in-place version uses storage diagonal matrices, and updates <code>A</code>, <code>D1</code> and <code>D2</code> in-place.</p><pre><code class="language-julia hljs">D1, R_k = Diagonal(Vector{T}(undef, m)), Diagonal(Vector{T}(undef, m))
+norm(D1 * A * D2 - A_scaled) ≤ sqrt(eps(T)) * norm(A)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre><p>Display of the input matrix <code>A</code>:</p><pre><code class="language-julia hljs">A</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×5 SparseArrays.SparseMatrixCSC{Float64, Int64} with 24 stored entries:
+  ⋅         ⋅        0.191601  0.41821   0.359767
+ 0.222009  0.467676   ⋅        0.167912  0.347202
+ 0.549691  0.909353  0.803885   ⋅        0.772499
+  ⋅         ⋅        0.828975  0.987188   ⋅ 
+  ⋅        0.828249  0.29727   0.81902   0.507742
+ 0.860259   ⋅        0.5879     ⋅        0.361506
+ 0.885582   ⋅        0.466837  0.135045  0.390669</code></pre><p>Display of the scaled matrix <code>A_scaled</code>:</p><pre><code class="language-julia hljs">A_scaled</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×5 SparseArrays.SparseMatrixCSC{Float64, Int64} with 24 stored entries:
+  ⋅         ⋅        0.512453  0.949043  1.0
+ 0.480996  0.999919   ⋅        0.344561  0.87268
+ 0.612546  1.0       0.999981   ⋅        0.998663
+  ⋅         ⋅        0.989705  1.0        ⋅ 
+  ⋅        0.999989  0.40599   0.949062  0.720661
+ 0.999996   ⋅        0.762871   ⋅        0.487514
+ 1.0        ⋅        0.588458  0.144432  0.511779</code></pre><p>The in-place version uses storage diagonal matrices, and updates <code>A</code>, <code>D1</code> and <code>D2</code> in-place.</p><pre><code class="language-julia hljs">D1, R_k = Diagonal(Vector{T}(undef, m)), Diagonal(Vector{T}(undef, m))
 D2, C_k = Diagonal(Vector{T}(undef, n)), Diagonal(Vector{T}(undef, n))
 A_scaled2 = copy(A)
 equilibrate!(A_scaled2, D1, D2, R_k, C_k, ϵ = ϵ)
@@ -29,21 +29,21 @@ norm(D1 * A * D2 - A_scaled2) ≤ sqrt(eps(T)) * norm(A)</code></pre><pre class=
 Q = Symmetric(tril(A + A&#39;), :L)
 Q_scaled, D = equilibrate(Q, ϵ = ϵ)
 norm(D * Q * D - Q_scaled) ≤ sqrt(eps(T)) * norm(Q)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre><p>Display of the input matrix <code>Q</code>:</p><pre><code class="language-julia hljs">Q</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×7 LinearAlgebra.Symmetric{Float64, SparseArrays.SparseMatrixCSC{Float64, Int64}}:
- 0.0       0.291809   0.854851  0.0       0.982931  0.0       0.346282
- 0.291809  0.0        0.737565  0.0       0.600071  0.78295   0.0505611
- 0.854851  0.737565   0.0       0.0       0.0       0.0       0.0
- 0.0       0.0        0.0       1.93351   0.996128  0.0       0.229134
- 0.982931  0.600071   0.0       0.996128  0.0       0.0       0.0
- 0.0       0.78295    0.0       0.0       0.0       0.0       0.584395
- 0.346282  0.0505611  0.0       0.229134  0.0       0.584395  0.0</code></pre><p>Display of the scaled matrix <code>Q_scaled</code>:</p><pre><code class="language-julia hljs">Q_scaled</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×7 LinearAlgebra.Symmetric{Float64, SparseArrays.SparseMatrixCSC{Float64, Int64}}:
- 0.0       0.333748   0.999969  0.0       1.0       0.0       0.530574
- 0.333748  0.0        0.96348   0.0       0.681751  1.0       0.0865126
- 0.999969  0.96348    0.0       0.0       0.0       0.0       0.0
- 0.0       0.0        0.0       1.0       0.720166  0.0       0.249485
- 1.0       0.681751   0.0       0.720166  0.0       0.0       0.0
- 0.0       1.0        0.0       0.0       0.0       0.0       0.999929
- 0.530574  0.0865126  0.0       0.249485  0.0       0.999929  0.0</code></pre><pre><code class="language-julia hljs">Q_scaled2 = copy(Q)
+ 0.0       0.0       0.0       0.109324   0.7919     0.0        0.0
+ 0.0       1.01896   1.23837   0.723549   0.0        0.0        1.15952
+ 0.0       1.23837   1.22586   0.0        0.289815   0.0        0.0
+ 0.109324  0.723549  0.0       0.0        0.0        0.0        0.0775407
+ 0.7919    0.0       0.289815  0.0        0.0        0.0989077  0.0
+ 0.0       0.0       0.0       0.0        0.0989077  0.0        0.0
+ 0.0       1.15952   0.0       0.0775407  0.0        0.0        0.126391</code></pre><p>Display of the scaled matrix <code>Q_scaled</code>:</p><pre><code class="language-julia hljs">Q_scaled</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×7 LinearAlgebra.Symmetric{Float64, SparseArrays.SparseMatrixCSC{Float64, Int64}}:
+ 0.0       0.0       0.0       0.188943  1.0       0.0       0.0
+ 0.0       0.822822  1.0       0.999984  0.0       0.0       0.999998
+ 0.0       1.0       0.989899  0.0       0.292658  0.0       0.0
+ 0.188943  0.999984  0.0       0.0       0.0       0.0       0.114452
+ 1.0       0.0       0.292658  0.0       0.0       0.999937  0.0
+ 0.0       0.0       0.0       0.0       0.999937  0.0       0.0
+ 0.0       0.999998  0.0       0.114452  0.0       0.0       0.116414</code></pre><pre><code class="language-julia hljs">Q_scaled2 = copy(Q)
 # D diagonal matrix and storage diagonal matrix (same size as Q)
 D, C_k = Diagonal(Vector{T}(undef, m)), Diagonal(Vector{T}(undef, m))
 equilibrate!(Q_scaled2, D, C_k, ϵ = ϵ)
-norm(D * Q * D - Q_scaled2) ≤ sqrt(eps(T)) * norm(Q)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../reference/">Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 3 November 2022 20:06">Thursday 3 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+norm(D * Q * D - Q_scaled2) ≤ sqrt(eps(T)) * norm(Q)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../reference/">Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Friday 4 November 2022 03:33">Friday 4 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
