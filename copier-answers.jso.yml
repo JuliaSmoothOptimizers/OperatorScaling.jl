@@ -1,0 +1,8 @@
+PackageName: "OperatorScaling"
+PackageOwner: "JuliaSmoothOptimizers"
+PackageUUID: "c32e1cdf-d535-416b-8655-021cdbf00cd4"
+_src_path: "https://github.com/JuliaSmoothOptimizers/JSOBestieTemplate.jl"
+_commit: "v0.13.0"
+AddBreakage: true
+AddBenchmark: false
+AddBenchmarkCI: true
